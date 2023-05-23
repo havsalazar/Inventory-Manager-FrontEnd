@@ -7,12 +7,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainComponent implements OnInit {
     public menu = [
+        // {
+        //     title: 'Calendario',
+        //     icon: 'calendar-outline',
+        //     link: '/main/scheduler',
+        //     home: true,
+        // },
         {
-            title: 'Calendario',
-            icon: 'calendar-outline',
-            link: '/main/scheduler',
-            home: true,
+            title:'Clients',
+            icon:'people-outline',
+            link:'/main/clients',
+            home:false
         },
+        {
+            title:'Suppliers',
+            icon:'people-outline',
+            link:'/main/suppliers',
+            home:false
+        }
     ]
     constructor() { }
 

@@ -17,13 +17,13 @@ import {
 } from '@nebular/theme';
 import { FooterComponent } from './../core/components/footer/footer.component';
 import { HeaderComponent } from './../core/components/header/header.component';
-import { NbSecurityModule } from '@nebular/security';
+import { NbSecurityModule } from '@nebular/security'; 
 
 @NgModule({
   declarations: [
     MainComponent,
     FooterComponent,
-    HeaderComponent,
+    HeaderComponent, 
   ],
   imports: [
     CommonModule,

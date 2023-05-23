@@ -10,7 +10,8 @@ const routes: Routes = [
         children: [
             
             { path: 'home', component: HomeComponent },
-            { path: 'scheduler', loadChildren: () => import('./scheduler/scheduler.module').then(m => m.SchedulerModule) },
+            // { path: 'scheduler', loadChildren: () => import('./scheduler/scheduler.module').then(m => m.SchedulerModule) },
+            { path: 'suppliers', loadChildren: () => import('./supplier/supplier.module').then(m => m.SupplierModule) },
             // { path: '', redirectTo: 'home' },
         ]
     },
