@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,8 +17,10 @@ import {
   NbRoleProvider,
 } from '@nebular/security';
 import { of as observableOf } from 'rxjs';
-import { NbThemeModule } from '@nebular/theme';
+import { NbThemeModule, NbToastrConfig, NbToastrModule } from '@nebular/theme';
 import { AuthGuard } from './core/components/guards/auth.guard';
+import { AuthInterceptor } from './core/Interceptors/authconfig.interceptor';
+import { AuthService } from './core/Interceptors/auth.service';
 export class NbSimpleRoleProvider extends NbRoleProvider {
   getRole() {
     // here you could provide any role based on any auth flow
@@ -37,6 +39,7 @@ export class NbSimpleRoleProvider extends NbRoleProvider {
     BrowserAnimationsModule,
     NbThemeModule.forRoot({ name: 'default' }),
     NbEvaIconsModule,
+    NbToastrModule.forRoot(),
     NbSecurityModule.forRoot(),
     NbAuthModule.forRoot({
       strategies: [
@@ -98,6 +101,12 @@ export class NbSimpleRoleProvider extends NbRoleProvider {
     }),
   ],
   providers: [
+    AuthService,
+    {
+      provide:HTTP_INTERCEPTORS,
+      useClass:AuthInterceptor,
+      multi: true
+    },
     AuthGuard,
     LayoutService,
     {

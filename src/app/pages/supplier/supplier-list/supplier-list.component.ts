@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SupplierService } from '../supplier.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-supplier-list',
@@ -6,25 +8,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./supplier-list.component.scss']
 })
 export class SupplierListComponent implements OnInit {
-  public tableSettings={
-    columns: {
-      id: {
-        title: 'ID'
-      },
-      name: {
-        title: 'Full Name'
-      },
-      username: {
-        title: 'User Name'
-      },
-      email: {
-        title: 'Email'
-      }
-    }
-  }
-  constructor() { }
+  suppliers: any[] = []
+  constructor(
+    private supplierService: SupplierService,
+    public router: Router,
+  ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    return this.supplierService.getSupplierPagginated().subscribe((data) => {
+      this.suppliers = data
+    })
   }
-
+  createNewSupplier() {
+    this.router.navigate(['/main/suppliers/supplier-detail/new']);
+  }
 }

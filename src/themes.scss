@@ -1,6 +1,6 @@
-@forward '@nebular/theme/styles/theming';
-@use '@nebular/theme/styles/theming' as *;
-@use '@nebular/theme/styles/themes/default';
+@forward 'node_modules/@nebular/theme/styles/theming';
+@use 'node_modules/@nebular/theme/styles/theming' as *;
+@use 'node_modules/@nebular/theme/styles/themes/default';
 
 $nb-themes: nb-register-theme((
 

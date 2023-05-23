@@ -1,5 +1,39 @@
 <div class="row">
+    <button status="primary" nbButton   outline (click)="createNewSupplier()"> Create new Supplier</button>
+</div>
+
+<div class="row">
+
     <div class="col-md-12">
-         
+        <p-table
+        [value]="suppliers"
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[10, 25, 50]"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width:25%">Name</th>
+                <th style="width:25%">Phone</th>
+                <th style="width:25%">Email</th> 
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-customer>
+            <tr>
+                <td>{{ customer.name }}</td>
+                <td>{{ customer.phone }}</td>
+                <td>{{ customer.email }}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="paginatorleft">
+            <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+        </ng-template>
+    </p-table>
     </div>
 </div>

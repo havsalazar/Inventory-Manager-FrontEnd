@@ -5,8 +5,10 @@ import { SupplierRoutingModule } from './supplier-routing.module';
 import { SupplierDetailComponent } from './supplier-detail/supplier-detail.component';
 import { SupplierListComponent } from './supplier-list/supplier-list.component'; 
 import { SupplierService } from './supplier.service';
-import { NbActionsModule, NbButtonModule, NbCardModule, NbInputModule } from '@nebular/theme'; 
+import { NbActionsModule, NbButtonModule, NbCardModule, NbInputModule, NbPopoverModule,  } from '@nebular/theme'; 
 import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -18,13 +20,16 @@ import { TableModule } from 'primeng/table';
     SupplierListComponent
   ],
   imports: [
+    ReactiveFormsModule ,
     CommonModule,
     SupplierRoutingModule,
     NbInputModule,
     NbCardModule ,
     NbButtonModule,
     NbActionsModule, 
-    TableModule
+    TableModule,
+    ButtonModule,
+    NbPopoverModule
   ]
 })
 export class SupplierModule { }
