@@ -21,6 +21,10 @@ import { NbThemeModule, NbToastrConfig, NbToastrModule } from '@nebular/theme';
 import { AuthGuard } from './core/components/guards/auth.guard';
 import { AuthInterceptor } from './core/Interceptors/authconfig.interceptor';
 import { AuthService } from './core/Interceptors/auth.service';
+import { L10nDisplayNamesPipe, L10nIntlModule, L10nTranslationModule } from 'angular-l10n';
+import { TranslationLoader, l10nConfig } from './l10n-config';
+import { HttpRequestInterceptor } from './core/Interceptors/http-request.interceptor';
+import { LocalService } from './core/Services/localStorage.service';
 export class NbSimpleRoleProvider extends NbRoleProvider {
   getRole() {
     // here you could provide any role based on any auth flow
@@ -41,24 +45,21 @@ export class NbSimpleRoleProvider extends NbRoleProvider {
     NbEvaIconsModule,
     NbToastrModule.forRoot(),
     NbSecurityModule.forRoot(),
+    
     NbAuthModule.forRoot({
-      strategies: [
-        // NbDummyAuthStrategy.setup({
-        //   name : 'dummy',
-        //   token : {
-        //     class: NbAuthSimpleToken,
-        //   },
-        //   delay: 1000,
-        //   alwaysFail: false,
-        // }),
-
+      strategies: [ 
         NbPasswordAuthStrategy.setup({
           name: 'email',
           baseEndpoint: 'http://localhost:3000',
           token: {
             class: NbAuthOAuth2JWTToken,
             key: 'token'
-          }, 
+          },
+          refreshToken: {
+            endpoint:'/auth/refresh-token',
+            method: 'get',
+            requireValidToken: true,
+          },
           login: {
             endpoint: '/auth/signin',
             redirect: {
@@ -99,6 +100,14 @@ export class NbSimpleRoleProvider extends NbRoleProvider {
       ],
       forms: {},
     }),
+    L10nTranslationModule.forRoot(
+      l10nConfig,
+      {
+        translationLoader: TranslationLoader
+      }
+    ),
+    L10nIntlModule,
+    L10nDisplayNamesPipe
   ],
   providers: [
     AuthService,
@@ -106,9 +115,10 @@ export class NbSimpleRoleProvider extends NbRoleProvider {
       provide:HTTP_INTERCEPTORS,
       useClass:AuthInterceptor,
       multi: true
-    },
+    }, 
     AuthGuard,
     LayoutService,
+    LocalService,
     {
       provide: NbRoleProvider, useClass: NbSimpleRoleProvider,
     }

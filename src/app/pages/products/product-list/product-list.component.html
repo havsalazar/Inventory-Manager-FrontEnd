@@ -1,1 +1,48 @@
-<p>product-list works!</p>
+<div class="row">
+    <div class="col-md-12">
+        <p-table #dt1 [value]="dataAll" [paginator]="true" [rows]="20"  
+            [tableStyle]="{ 'min-width': '50rem' }" selectionMode="single" [(selection)]="selectedRow"
+            (onRowSelect)="loadDetail($event)" >
+            <ng-template pTemplate="caption">
+                <div class="d-flex justify-content-between">
+                    <div class="p2">
+                        <button status="primary" nbButton outline (click)="createNew()">New</button>
+                    </div>
+                    <div>
+                        <h3 class="table-titles">{{routerPath|titlecase}}</h3>
+                    </div>
+                    <div class="p2">
+                        <nb-form-field>
+                            <input type='text' #goblarSearchId nbInput (keyup)="searchGlobal(goblarSearchId.value)" placeholder="Search (min 3)" >
+                            <button nbSuffix nbButton ghost (click)="searchGlobal(goblarSearchId.value)">
+                                <nb-icon icon="search" pack="eva" aria-label="Search">
+                                </nb-icon>
+                            </button>
+                        </nb-form-field>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width:25%">code</th>
+                    <th style="width:25%">Reference</th>
+                    <th style="width:25%">Name</th>
+                    <th style="width:25%">Price</th>
+                    <th style="width:25%">Quantity</th>
+                    <th style="width:25%">del</th>
+
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-data>
+                <tr [pSelectableRow]="data">
+                    <td>{{ data.code }}</td> 
+                    <td>{{ data.reference }}</td> 
+                    <td>{{ data.name }}</td> 
+                    <td>{{ data.price| currency }}</td> 
+                    <td>{{ sumStocks(data.stocks) }}</td> 
+                    <td><button nbButton ghost status="danger" (click)="requestDelete(data.id) ;$event.stopPropagation()"><nb-icon icon="star"></nb-icon></button> </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

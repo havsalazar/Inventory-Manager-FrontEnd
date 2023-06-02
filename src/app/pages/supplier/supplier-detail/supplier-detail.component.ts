@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { SupplierService } from '../supplier.service';
-import { Router } from '@angular/router';
-import { NbGlobalPhysicalPosition, NbPopoverDirective, NbToastrService } from '@nebular/theme';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NbGlobalPhysicalPosition, NbToastrService } from '@nebular/theme';
+import { take } from 'rxjs';
+import { GeneralService } from 'src/app/core/Services/general.service';
 
 
 @Component({
@@ -11,33 +12,47 @@ import { NbGlobalPhysicalPosition, NbPopoverDirective, NbToastrService } from '@
   styleUrls: ['./supplier-detail.component.scss']
 })
 export class SupplierDetailComponent implements OnInit {
-  
-  positions = NbGlobalPhysicalPosition;
 
+  positions = NbGlobalPhysicalPosition;
+  private routerPath='suppliers' 
   constructor(
     public router: Router,
     public fb: FormBuilder,
     private toastrService: NbToastrService,
-    private supplierService: SupplierService, 
-
+    private generalService: GeneralService,
+    private route: ActivatedRoute
   ) { }
-  supplierForm = this.fb.group({
+  detailForm = this.fb.group({
     code: [''],
+    id: [],
     name: ['', Validators.required],
     phone: [''],
     email: [''],
     address: ['']
   })
   ngOnInit(): void {
- 
+    this.route.params.subscribe(params => { 
+      if (params['id']) {
+        this.generalService.getById(params['id']).subscribe(data => {
+          this.detailForm.patchValue(data)
+        })
+      }
+    })
   }
   onSubmit() {
-    this.supplierForm.markAllAsTouched();
-    if (this.supplierForm.valid) {
-      this.supplierService.createSupplier(this.supplierForm.value).subscribe((data: {}) => {
-        this.toastrService.show('','Created',{position:this.positions.TOP_RIGHT, status:'success'});
-        this.router.navigate(['/main/suppliers/']);
-      });
+    this.detailForm.markAllAsTouched();
+    if (this.detailForm.valid) {
+      const { id, ...values } = this.detailForm.value
+      if (!id) {
+        this.generalService.create(values).pipe(take(1)).subscribe((data: {}) => {
+          this.toastrService.show('', 'Created', { position: this.positions.TOP_RIGHT, status: 'success' });
+        });
+      } else {
+        this.generalService.update(id, values).pipe(take(1)).subscribe((data: {}) => {
+          this.toastrService.show('', 'Updated', { position: this.positions.TOP_RIGHT, status: 'success' });
+        });
+      }
+      this.router.navigate([`/main/${this.routerPath}/`]);
     }
   }
 }

@@ -8,10 +8,11 @@
 </div>
 
 <div class="header-container">
-  <nb-actions size="small">
-
+  <p-dropdown [options]="schema" [(ngModel)]="selectedLocale" optionLabel="locale.language" optionValue="locale" (onChange)="setLocale($event.value)" ></p-dropdown>
+  <nb-actions size="small">    
     <nb-action class="control-item" icon="email-outline"></nb-action>
-    <nb-action class="control-item" icon="bell-outline" (click)="logOut()"></nb-action>
+    <!-- <nb-action class="control-item" icon="flip-2-outline" (click)="reloadToken()"></nb-action> -->
+    <nb-action class="control-item" icon="log-out-outline" (click)="logOut()"></nb-action>
     <nb-action class="user-action" *nbIsGranted="['view', 'user']" >
       <nb-user [nbContextMenu]="userMenu"
                [onlyPicture]="userPictureOnly"

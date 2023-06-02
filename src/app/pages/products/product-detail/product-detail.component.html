@@ -1,1 +1,141 @@
-<p>product-detail works!</p>
+<nb-card>
+    <nb-card-header>Basic form</nb-card-header>
+    <nb-card-body>
+        <form [formGroup]="detailForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="code" class="label">code</label>
+                                <input id="code" type="text" nbInput fullWidth formControlName="code"
+                                    placeholder="code">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="reference" class="label">reference</label>
+                                <input id="reference" type="text" nbInput fullWidth formControlName="reference"
+                                    placeholder="reference">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="price" class="label">Price</label>
+                                <input id="price" type="number" nbInput fullWidth formControlName="price"
+                                    placeholder="Price" [status]="(detailForm.controls['price'].invalid 
+                && (detailForm.controls['price'].dirty || detailForm.controls['price'].touched))?'danger':'basic' ">
+                                <label *ngIf="detailForm.controls['price'].invalid  
+                        && (detailForm.controls['price'].dirty || detailForm.controls['price'].touched)" for="price"
+                                    class="label text-danger">Price is required</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="name" class="label">Name</label>
+                            <input id="name" type="text" nbInput fullWidth formControlName="name" placeholder="Name"
+                                [status]="(detailForm.controls['name'].invalid 
+                && (detailForm.controls['name'].dirty || detailForm.controls['name'].touched))?'danger':'basic' ">
+                            <label *ngIf="detailForm.controls['name'].invalid  
+                        && (detailForm.controls['name'].dirty || detailForm.controls['name'].touched)" for="name"
+                                class="label text-danger">Name is required</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="d-flex flex-row">
+                            <div class="p-2">
+                                <p-checkbox formControlName="vat" [binary]="true" inputId="vat"></p-checkbox>
+                                <label class="label-checkbox" for="vat">VAT?</label>
+                            </div>
+                            <div class="p-2">
+                                <p-checkbox formControlName="stockeable" [binary]="true"
+                                    inputId="stockeable"></p-checkbox>
+                                <label class="label-checkbox" for="stockeable">is Stockeable?</label>
+                            </div>
+                            <div class="p-2">
+                                <p-checkbox formControlName="isService" [binary]="true"
+                                    inputId="isService"></p-checkbox>
+                                <label class="label-checkbox" for="isService">is Service?</label>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="row" id="stock-table" *ngIf="detailForm.controls.stockeable.value">
+                        <p-card>
+                            <ng-template pTemplate="header">
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="p-2 col p-card-title" >Stocks</div>
+                                    <div class="p-2 ml-auto"><button type='button' nbButton status="primary" (click)="newStock()"><nb-icon
+                                    icon="plus-outline"></nb-icon> Add New Stock</button></div>
+                                </div>          
+                            </ng-template>
+                            <ng-template pTemplate="content">
+                                <p-table [value]="getStocks.controls" formArrayName="stock">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>label</th>
+                                            <th>Quantity</th>
+                                            <th> Remove </th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-adminForm let-index="rowIndex">
+                                        <tr [formGroupName]="index">
+                                            <td>{{index}}</td>
+                                            <td class="for-stock">
+                                                <input id="label-{{index}}" type="text" nbInput fullWidth
+                                                    formControlName="label" placeholder="label">
+                                            </td>
+                                            <td class="for-stock">
+                                                <input id="quantity-{{index}}" type="number" nbInput fullWidth
+                                                    formControlName="quantity" placeholder="quantity">
+                                            </td>
+                                            <td class="for-stock">
+                                                <button nbButton ghost status="danger"
+                                                    (click)="removeSkill(index)"><nb-icon
+                                                        icon="close-outline"></nb-icon></button>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </ng-template>
+                        </p-card>
+                    </div>
+                </div>
+                <div class="col-md-4  ">
+                    <div class="container">
+                        <div class="row justify-content-md-center">
+                            <p-card>
+                                <div class="row justify-content-md-center">
+                                    <div class="col-md-auto">
+                                        <p-image [src]="getImage()" alt="Image" width="250"></p-image>
+                                    </div>
+                                </div>
+
+                                <ng-template pTemplate="footer">
+                                    <div class="row justify-content-md-center">
+                                        <div class="col-md-auto ">
+                                            <p-fileUpload mode="basic" chooseLabel="Upload Picture" name="file"
+                                                #fileUpload [customUpload]="false" [url]="fileuploadUrl"
+                                                (onUpload)="onFileUpload($event)" accept="image/*"
+                                                [maxFileSize]="1000000">
+                                            </p-fileUpload>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </p-card>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group p-2">
+                    <button type="submit" class="" nbButton status="danger">Submit</button>
+                </div>
+            </div>
+
+        </form>
+    </nb-card-body>
+</nb-card>

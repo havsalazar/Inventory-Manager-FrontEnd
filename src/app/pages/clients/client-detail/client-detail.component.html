@@ -1,1 +1,63 @@
-<p>client-detail works!</p>
+<nb-card>
+    <nb-card-header>Basic form</nb-card-header>
+    <nb-card-body>
+        <form [formGroup]="detailForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-lg-4">
+                    <div class="form-group">
+                        <label for="fullName" class="label">Name</label>
+                        <input id="fullName" type="text" nbInput fullWidth formControlName="fullName"
+                            placeholder="Full Name"
+                            [status]="(detailForm.controls['fullName'].invalid 
+                && (detailForm.controls['fullName'].dirty || detailForm.controls['fullName'].touched))?'danger':'basic' ">
+
+                        <label *ngIf="detailForm.controls['fullName'].invalid  
+                        && (detailForm.controls['fullName'].dirty || detailForm.controls['fullName'].touched)"
+                            for="exampleInputPassword1" class="label text-danger">Name is required</label>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="email" class="label">Email</label>
+                        <input type="text" id="email" nbInput fullWidth formControlName="email"
+                            placeholder="email@example.com">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="identification_number" class="label">Identification Number</label>
+                        <input id="identification_number" type="text" nbInput fullWidth
+                            formControlName="identification_number" placeholder="identification_number">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="identification_type" class="label">Identification Type</label>
+                        </div>
+                        <div class="row"> 
+                            <p-dropdown formControlName="identification_type" [options]="identificationTypes" optionLabel="name" optionValue="id"></p-dropdown>
+                        </div>
+                    </div>
+                </div>        
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="phone" class="label">Phone</label>
+                    <input type="text" id="phone" nbInput fullWidth formControlName="phone" placeholder="Phone">
+                </div>
+                <div class="form-group">
+                    <label for="plate" class="label">Plate</label>
+                    <input id="plate" type="text" nbInput fullWidth formControlName="plate" placeholder="plate">
+                </div>
+            </div> 
+            <div class="form-group">
+                <button type="submit" nbButton status="danger">Submit</button>
+            </div>
+        </form>
+    </nb-card-body>
+</nb-card>

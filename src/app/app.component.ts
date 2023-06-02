@@ -17,26 +17,35 @@ export class AppComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: NbAuthService
   ) {
-    this.event$= this.router.events
-        .subscribe(
-          (event: NavigationEvent) => {
-            if (event instanceof NavigationStart) {
-              console.log(event.url)
-              this.currUrl=event.url;
-              localStorage.setItem('lastUrl', this.currUrl);
-            }
-          });
+    this.event$ = this.router.events
+      .subscribe(
+        (event: NavigationEvent) => {
+          if (event instanceof NavigationStart) {
+            // console.log(event.url)
+            this.currUrl = event.url;
+            localStorage.setItem('lastUrl', this.currUrl);
+          }
+        });
 
   }
-  ngOnInit() { 
-    let lastUrl=localStorage.getItem('lastUrl');
-    
-    this.authService.isAuthenticated().subscribe(data => {
-      if(!lastUrl){
-        lastUrl='/main'
+  ngOnInit() {
+    let lastUrl = localStorage.getItem('lastUrl');
+    console.log(lastUrl);
+    this.authService.isAuthenticatedOrRefresh().subscribe(authenticated => {
+      console.log(authenticated);
+      if (authenticated) {
+        if (!lastUrl || lastUrl==='login') {
+          lastUrl = 'main'
+        }
+        this.router.navigate([lastUrl]);
       }
-      this.router.navigate([localStorage.getItem('lastUrl')]);
-    });
+    })
+    // this.authService.isAuthenticated().subscribe(data => {
+    //   if(!lastUrl){
+    //     lastUrl='/main'
+    //   }
+    //   this.router.navigate([localStorage.getItem('lastUrl')]);
+    // });
   }
 
 }

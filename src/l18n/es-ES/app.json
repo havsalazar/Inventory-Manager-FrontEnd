@@ -1,0 +1,15 @@
+{
+    "app":{
+        "title":"WorkShop"
+    },
+    "products":{
+        "products":"Products"
+    },
+    "buttons":{
+        "new":"Nuevo",
+        "save":"Guardar"
+    },
+    "search":{
+        "label":"Buscar (min 3)"
+    }
+}

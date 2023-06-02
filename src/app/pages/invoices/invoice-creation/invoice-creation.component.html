@@ -1,0 +1,176 @@
+<nb-card>
+    <nb-card-body>
+        <div class="row">
+            <div class="row">
+
+            </div>
+            <div class="row">
+                <div class="header">
+                    <h4>New Invoice</h4>
+                </div>
+            </div>
+            <div class="row">
+                <p-divider></p-divider>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12"> 
+                    <div class="row">
+                        <p-autoComplete [(ngModel)]="selectedClient" [suggestions]="clientList" appendTo="body"
+                            [forceSelection]="true" [minLength]="3" placeholder="Search client" [showClear]="true"
+                            field="fullName" (completeMethod)="searchClients($event.query)"
+                            (onClear)="clearSearch()" [showEmptyMessage]="true" 
+                            inputStyleClass="fullWidthInputs" [dropdown]="false">
+                            <ng-template let-client pTemplate="item">
+                                <div class="flex align-items-center gap-2">
+                                    <div>{{ client.fullName }} {{ client.identification_number }} </div>
+                                </div>
+                            </ng-template>
+                            <ng-template let-client pTemplate="empty">
+                                <div class="flex align-items-center gap-2">
+                                    <button nbButton fullWidth status="primary" (click)="createNewClient()">Add New Client</button>
+                                </div>                                
+                            </ng-template>
+                        </p-autoComplete>
+                    </div>
+                    <ng-template [ngIf]="selectedClient?true:false">
+                        <div class="row pt-2">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="inputFirstName" class="label">Full Name</label>
+                                    <input type="text" nbInput fullWidth id="inputFirstName"
+                                        [(ngModel)]="selectedClient.fullName" placeholder="First Name" disabled>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label for="email" class="label">Email</label>
+                                        <input type="text" id="email" nbInput fullWidth disabled
+                                            [(ngModel)]="selectedClient.email" placeholder="email@example.com">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <div class="row"><label for="inputEmail" class="label">Identification Type</label>
+                                    </div>
+                                    <div class="row"><p-dropdown [disabled]="true"
+                                            [(ngModel)]="selectedClient.identification_type"
+                                            [options]="identificationTypes" optionLabel="name"
+                                            [styleClass]="'dropdownType'" optionValue="id"></p-dropdown></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="identification_number" class="label">Identification Number</label>
+                                    <input id="identification_number" type="text" nbInput fullWidth disabled
+                                        [(ngModel)]="selectedClient.identification_number"
+                                        placeholder="identification number">
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="phone" class="label">Phone</label>
+                                    <input type="text" id="phone" nbInput fullWidth [(ngModel)]="selectedClient.phone"
+                                        disabled placeholder="Phone">
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="plate" class="label">Plate</label>
+                                    <input id="plate" type="text" nbInput fullWidth [(ngModel)]="selectedClient.plate"
+                                        disabled placeholder="plate">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                        </div>
+                    </ng-template>
+                    <!-- <button type="submit" nbButton>Submit</button> -->
+                    <!-- </nb-card-body> -->
+                    <!-- </nb-card> -->
+                </div>
+            </div>
+            <div class="row">
+                <p-divider></p-divider>
+            </div>
+            <div class="row">
+                <div class="col-md-9">Item</div>
+                <div class="col-md-1">QTY</div>
+                <div class="col-md-1">Total</div>
+                <div class="col-md-1">Action</div>
+            </div>
+            <div class="row">
+                <p-divider></p-divider>
+            </div>
+            <div class="row">
+                <div class="col-md-9"><input id="plate" type="text" nbInput fullWidth placeholder="Item"></div>
+                <div class="col-md-1"><input id="plate" type="number" nbInput fullWidth placeholder="0"></div>
+                <div class="col-md-1">{{1500000 | currency}}</div>
+                <div class="col-md-1">Action</div>
+            </div>
+            <div class="row">
+                <p-divider></p-divider>
+            </div>
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="col-md-12 ">
+                        <p class="text-link">Add Item</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <span class="text-basic total-invoice">Subtotal</span>
+                        </div>
+                        <div class="col-md-8">
+                            <span class="text-basic total-invoice">{{1500000 | currency}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <span class="text-basic text-link "> Add discount</span>
+                        </div>
+                        <div class="col-md-8">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <span class="text-basic text-link ">Add tax</span>
+                        </div>
+                        <div class="col-md-8">
+
+                        </div>
+                    </div>
+                    <div class="row"><p-divider></p-divider></div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6 class="text-basic total-invoice">Total</h6>
+                        </div>
+                        <div class="col-md-8">
+                            <h6 class="text-basic total-invoice">{{1500000 | currency}}</h6>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row"><p-divider></p-divider></div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="email" class="label">Notes</label>
+                            <textarea nbInput fullWidth placeholder="Add notes here!!"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nb-card-body>
+</nb-card>

@@ -18,6 +18,10 @@ import {
 import { FooterComponent } from './../core/components/footer/footer.component';
 import { HeaderComponent } from './../core/components/header/header.component';
 import { NbSecurityModule } from '@nebular/security'; 
+import { L10nDisplayNamesPipe, L10nTranslatePipe } from 'angular-l10n';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
+import { DynamicDialogConfig, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @NgModule({
   declarations: [
@@ -38,6 +42,14 @@ import { NbSecurityModule } from '@nebular/security';
     NbActionsModule,
     NbContextMenuModule,
     NbIconModule,
+    L10nTranslatePipe,
+    L10nDisplayNamesPipe,
+     DropdownModule ,
+     FormsModule,
+     DynamicDialogModule
+  ],
+  providers:[
+    DynamicDialogRef,DynamicDialogConfig
   ]
 })
 export class MainModule { }

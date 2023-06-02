@@ -5,9 +5,11 @@ import { SupplierDetailComponent } from './supplier-detail/supplier-detail.compo
 
 const routes: Routes = [
   
-  {path: 'supplier-list', pathMatch:'full', component:SupplierListComponent},
-  {path: 'supplier-detail/:id', component:SupplierDetailComponent},
-  {path: '', pathMatch:'full', redirectTo:'supplier-list'},
+  {path: 'list', pathMatch:'full', component:SupplierListComponent},
+  {path: 'detail', component:SupplierDetailComponent},
+  {path: 'detail/:id', component:SupplierDetailComponent},
+  {path: '', pathMatch:'full', redirectTo:'list'},
+  
 ];
 
 @NgModule({

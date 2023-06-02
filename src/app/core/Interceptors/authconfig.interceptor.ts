@@ -1,33 +1,44 @@
 import { Injectable } from "@angular/core";
-import { HttpInterceptor, HttpRequest, HttpHandler } from "@angular/common/http"; 
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse } from "@angular/common/http";
 import { AuthService } from "./auth.service";
-import { switchMap, tap } from "rxjs";
+import { Observable, catchError, of, retry, switchMap, tap, throwError } from "rxjs";
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-    constructor(private authService: AuthService) { }
-    intercept(request: HttpRequest<any>, next: HttpHandler) {
+  private isRefreshing = false;
 
-        return this.authService.getToken().pipe(
-            //tap(token => '' = token), // side effect to set token property on auth service
-            switchMap(token => { // use transformation operator that maps to an Observable<T>
-              const newRequest = request.clone({
-                setHeaders: {
-                  Authorization: `Bearer ${token}`
-                }
-              });
-      
-              return next.handle(newRequest);
-            })
-          );
+  constructor(private authService: AuthService) { }
 
+  intercept(request: HttpRequest<any>, next: HttpHandler) {
+    return this.authService.getToken().pipe(
+      switchMap(token => {
+        const newRequest = request.clone({
+          setHeaders: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        return next.handle(newRequest).pipe( 
+          catchError(
+            (error: HttpErrorResponse): Observable<any> => { 
+              if (error.status === 401) { 
+                return this.authService.refreshToken().pipe(switchMap(() => {
+                  return this.authService.getToken().pipe(
+                    switchMap(token => {
+                      const newRequest = request.clone({
+                        setHeaders: {
+                          Authorization: `Bearer ${token}`
+                        }
+                      }); 
+                      return next.handle(newRequest);
+                    })
+                  )
+                }),catchError((error:any)=>{return throwError(()=>error)})  ) 
 
-
-        // req = req.clone({
-        //     setHeaders: {
-        //         Authorization: "Bearer " + this.authService.getToken()
-        //     }
-        // });
-        // return next.handle(req);
-
-    }
+              }
+              return throwError(() => error);
+            },
+          ),
+        )
+      })
+    );
+  }
 }
