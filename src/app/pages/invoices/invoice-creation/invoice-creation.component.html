@@ -14,13 +14,13 @@
 
             </div>
             <div class="row">
-                <div class="col-md-12"> 
+                <div class="col-md-12">
                     <div class="row">
                         <p-autoComplete [(ngModel)]="selectedClient" [suggestions]="clientList" appendTo="body"
                             [forceSelection]="true" [minLength]="3" placeholder="Search client" [showClear]="true"
-                            field="fullName" (completeMethod)="searchClients($event.query)"
-                            (onClear)="clearSearch()" [showEmptyMessage]="true" 
-                            inputStyleClass="fullWidthInputs" [dropdown]="false">
+                            field="fullName" (completeMethod)="searchClients($event.query)" (onClear)="clearSearch()"
+                            (onSelect)="isSelectedClient=true"
+                            [showEmptyMessage]="true" inputStyleClass="fullWidthInputs" [dropdown]="false">
                             <ng-template let-client pTemplate="item">
                                 <div class="flex align-items-center gap-2">
                                     <div>{{ client.fullName }} {{ client.identification_number }} </div>
@@ -28,12 +28,13 @@
                             </ng-template>
                             <ng-template let-client pTemplate="empty">
                                 <div class="flex align-items-center gap-2">
-                                    <button nbButton fullWidth status="primary" (click)="createNewClient()">Add New Client</button>
-                                </div>                                
+                                    <button nbButton fullWidth status="primary" (click)="createNewClient()">Add New
+                                        Client</button>
+                                </div>
                             </ng-template>
                         </p-autoComplete>
                     </div>
-                    <ng-template [ngIf]="selectedClient?true:false">
+                    <ng-template [ngIf]="isSelectedClient">
                         <div class="row pt-2">
                             <div class="col-sm-6">
                                 <div class="form-group">
@@ -100,7 +101,7 @@
                 <p-divider></p-divider>
             </div>
             <div class="row">
-                <div class="col-md-9">Item</div>
+                <div class="col-md-9">Product</div>
                 <div class="col-md-1">QTY</div>
                 <div class="col-md-1">Total</div>
                 <div class="col-md-1">Action</div>
@@ -108,10 +109,17 @@
             <div class="row">
                 <p-divider></p-divider>
             </div>
-            <div class="row">
-                <div class="col-md-9"><input id="plate" type="text" nbInput fullWidth placeholder="Item"></div>
-                <div class="col-md-1"><input id="plate" type="number" nbInput fullWidth placeholder="0"></div>
-                <div class="col-md-1">{{1500000 | currency}}</div>
+
+            <div class="row" *ngFor="let product of products;index as i;count as c">
+                <div class="col-md-9">
+                    <div>{{ product.code }} - {{ product.name }} - {{product.reference}} </div>
+                    <!--<input id="plate" type="text" nbInput fullWidth placeholder="Item"> -->
+                </div>
+                <div class="col-md-1"><p-inputNumber id="plate" type="number" [(ngModel)]="product.qty"
+                        [max]="product.max" (change)="alterQuantity($event,product)" [min]="1" 
+                        inputStyleClass="fullWidthInputs"  [showButtons]="false"
+                        placeholder="0"></p-inputNumber> </div>
+                <div class="col-md-1">{{product.price*product.qty | currency}}</div>
                 <div class="col-md-1">Action</div>
             </div>
             <div class="row">
@@ -120,7 +128,18 @@
             <div class="row">
                 <div class="col-md-9">
                     <div class="col-md-12 ">
-                        <p class="text-link">Add Item</p>
+                        <p-autoComplete [(ngModel)]="selectedProduct" [suggestions]="productSuggestions" appendTo="body"
+                            [forceSelection]="true" [minLength]="3" placeholder="Search product" [showClear]="true"
+                            field="name" (completeMethod)="searchItem($event.query)" (onSelect)="addItem($event)"
+                            [showEmptyMessage]="true" inputStyleClass="fullWidthInputs" [dropdown]="false">
+                            <ng-template let-product pTemplate="item">
+                                <div class="flex align-items-center gap-2">
+                                    <div>{{ product.code }} - {{ product.name }} - {{product.reference}} </div>
+                                </div>
+                            </ng-template>
+
+                        </p-autoComplete>
+                        <!-- <p class="text-link">Add Item</p> -->
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -129,7 +148,7 @@
                             <span class="text-basic total-invoice">Subtotal</span>
                         </div>
                         <div class="col-md-8">
-                            <span class="text-basic total-invoice">{{1500000 | currency}}</span>
+                            <span class="text-basic total-invoice">{{getSubtotalProducts() | currency}}</span>
                         </div>
                     </div>
                     <div class="row">
@@ -154,7 +173,7 @@
                             <h6 class="text-basic total-invoice">Total</h6>
                         </div>
                         <div class="col-md-8">
-                            <h6 class="text-basic total-invoice">{{1500000 | currency}}</h6>
+                            <h6 class="text-basic total-invoice">{{getTotalProducts() | currency}}</h6>
                         </div>
                     </div>
 

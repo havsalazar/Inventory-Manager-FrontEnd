@@ -46,25 +46,32 @@ export class ClientDetailComponent implements OnInit {
     email: [''],
     phone: ['']
   })
+  public detailId:string=''
   ngOnInit(): void {
+    console.log(this.dialogConf.data)
+    this.detailId = this.dialogConf.data.id ? this.dialogConf.data.id : null
+    if (this.detailId) {
+      this.generalService.getById(this.detailId).subscribe(data => {
+        this.detailForm.patchValue(data)
+      })
+    }
+    // this.route.params.subscribe(params => {
+    //   if (params['id']) {
+    //     this.generalService.getById(params['id']).subscribe(data => {
+    //       this.detailForm.patchValue(data)
 
-    this.route.params.subscribe(params => {
-      if (params['id']) {
-        this.generalService.getById(params['id']).subscribe(data => {
-          this.detailForm.patchValue(data)
-
-        })
-      } else {
-        setTimeout(() => this.detailForm.controls.identification_type.setValue(3), 1000);
-      }
-    })
+    //     })
+    //   } else {
+    //     setTimeout(() => this.detailForm.controls.identification_type.setValue(3), 1000);
+    //   }
+    // })
   }
   onSubmit() {
     this.detailForm.markAllAsTouched();
     if (this.detailForm.valid) {
       const { id, ...values } = this.detailForm.value
       if (!id) {
-        this.generalService.create(values,'client').pipe(take(1)).subscribe((data: {}) => {
+        this.generalService.create(values, 'client').pipe(take(1)).subscribe((data: {}) => {
           // this.toastrService.show('', 'Created', { position: this.positions.TOP_RIGHT, status: 'success' });
           this.showToast('Created')
           this.returnData(data)

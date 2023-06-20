@@ -1,5 +1,5 @@
 <nb-card>
-    <nb-card-header>Basic form</nb-card-header>
+    <!-- <nb-card-header>Basic form</nb-card-header> -->
     <nb-card-body>
         <form [formGroup]="detailForm" (ngSubmit)="onSubmit()">
             <div class="row">
@@ -56,7 +56,7 @@
                 </div>
             </div> 
             <div class="form-group">
-                <button type="submit" nbButton status="danger">Submit</button>
+                <button type="submit" nbButton status="primary" outline>{{this.detailId?'Update':'Create'}}</button>
             </div>
         </form>
     </nb-card-body>

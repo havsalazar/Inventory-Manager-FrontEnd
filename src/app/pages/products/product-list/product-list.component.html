@@ -29,7 +29,7 @@
                     <th style="width:25%">Name</th>
                     <th style="width:25%">Price</th>
                     <th style="width:25%">Quantity</th>
-                    <th style="width:25%">del</th>
+                    <th style="width:25%">Delete</th>
 
                 </tr>
             </ng-template>
@@ -39,10 +39,14 @@
                     <td>{{ data.reference }}</td> 
                     <td>{{ data.name }}</td> 
                     <td>{{ data.price| currency }}</td> 
-                    <td>{{ sumStocks(data.stocks) }}</td> 
-                    <td><button nbButton ghost status="danger" (click)="requestDelete(data.id) ;$event.stopPropagation()"><nb-icon icon="star"></nb-icon></button> </td>
+                    <td>{{ sumStocks(data.stocks) }}</td>  
+                    <!-- <td><button nbButton ghost status="danger" (click)="requestDelete($event,data.id) ;$event.stopPropagation()"><nb-icon icon="star"></nb-icon></button> </td> -->
+                    <td><p-button styleClass="p-button-danger" icon="pi pi-trash" (click)="requestDelete($event,data.id) ;$event.stopPropagation()"> </p-button> </td>
                 </tr>
             </ng-template>
         </p-table>
     </div>
 </div>
+<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>    
+ <p-toast></p-toast>
+

@@ -14,7 +14,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MODULE_NAME } from 'src/app/core/Inyectors/service.inyector';
 import { GeneralService } from 'src/app/core/Services/general.service';
 import { DropdownModule } from 'primeng/dropdown';
-
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @NgModule({
   providers: [
@@ -46,6 +46,7 @@ import { DropdownModule } from 'primeng/dropdown';
     NbIconModule,
     AutoCompleteModule,
     DropdownModule,
+    InputNumberModule
   ]
 })
 export class InvoicesModule { }

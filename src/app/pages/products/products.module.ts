@@ -15,6 +15,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ImageModule } from 'primeng/image';
 import { FileUploadModule } from 'primeng/fileupload';
 import { CardModule } from 'primeng/card';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   providers: [
@@ -45,7 +47,9 @@ import { CardModule } from 'primeng/card';
     CheckboxModule ,
     ImageModule,
     FileUploadModule,
-    CardModule
+    CardModule,
+    ToastModule,
+    ConfirmDialogModule
   ]
 })
 export class ProductsModule { }

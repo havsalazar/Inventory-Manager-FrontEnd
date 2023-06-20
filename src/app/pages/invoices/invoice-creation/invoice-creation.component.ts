@@ -24,6 +24,13 @@ export class InvoiceCreationComponent implements OnInit {
   public selectedClient: Client
   public clientList: Client[] = []
   public identificationTypes = tp
+  public isSelectedClient=false
+  public productSuggestions: any[] = []
+  public selectedProduct: any;
+  public products: any[] = []
+
+
+
   ngOnInit(): void {
   }
   searchClients(toSearch: any) {
@@ -37,19 +44,55 @@ export class InvoiceCreationComponent implements OnInit {
     }
   }
   clearSearch() {
+    this.isSelectedClient=false
     this.selectedClient = new Client()
   }
   createNewClient() {
     this.ref = this.dialogService.open(ClientDetailComponent, {
       data: {
         open_as: 'window',
-        urlPath:'client'
+        urlPath: 'client'
       },
     });
-    this.ref.onClose.subscribe((client:Client) => {
+    this.ref.onClose.subscribe((client: Client) => {
       if (client) {
-           this.selectedClient = client
+        this.selectedClient = client
       }
-  });
+    });
+  }
+  searchItem(toSearch: any) {
+    if (toSearch) {
+      if (toSearch.length < 3) return;
+      return this.generalService.searchGlobal(toSearch, 'product').subscribe((data) => {
+        this.productSuggestions = data
+      })
+    } else {
+      return
+    }
+  }
+  addItem(item: any) {
+    const sumQTY = (arr: any[]):number => arr.reduce((x, y) => x.quantity + y.quantity)
+    this.products.push({ ...item ,qty:1,max: sumQTY(item.stocks) })
+    this.selectedProduct = {}
+  }
+  getTotalProducts():number{
+    let total=0
+    for (let index = 0; index < this.products.length; index++) {
+      const element = this.products[index];
+      total+=element.price*element.qty      
+    }
+    return total
+  }
+  alterQuantity( $event:any,product:any){
+    console.log($event.value)
+
+  }
+  getSubtotalProducts():number{
+    let subtotal=0
+    for (let index = 0; index < this.products.length; index++) {
+      const element = this.products[index];
+      subtotal+=element.price*element.qty      
+    }
+    return subtotal
   }
 }
